@@ -45,17 +45,14 @@
       <file leaf-file-name="View.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/View.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.21911421" vertical-offset="581" max-vertical-offset="1350">
-              <caret line="139" column="7" selection-start-line="139" selection-start-column="7" selection-end-line="139" selection-end-column="7" />
+            <state vertical-scroll-proportion="0.36829838" vertical-offset="2377" max-vertical-offset="3825">
+              <caret line="169" column="24" selection-start-line="169" selection-start-column="24" selection-end-line="169" selection-end-column="24" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#View#0;class#View#0" expanded="false" />
-                <element signature="method#createButton#1;class#View#0" expanded="false" />
-                <element signature="method#resetBoard#0;class#View#0" expanded="false" />
-                <element signature="method#doTurn#0;class#View#0" expanded="false" />
-                <element signature="method#userPressed#0;class#View#0" expanded="false" />
+                <element signature="e#7969#7970#0" expanded="true" />
+                <element signature="e#8027#8028#0" expanded="true" />
+                <element signature="method#actionPerformed#0;class#Listener#0;class#View#0" expanded="false" />
                 <element signature="method#checkIfWon#0;class#Listener#0;class#View#0" expanded="false" />
-                <element signature="method#checkWinInDirection#0;class#Listener#0;class#View#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -504,12 +501,12 @@
       <created>1427555339991</created>
       <option name="number" value="Default" />
       <updated>1427555339991</updated>
-      <workItem from="1427555343844" duration="5161000" />
+      <workItem from="1427555343844" duration="7659000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5161000" />
+    <option name="totallyTimeSpent" value="7659000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="88" y="23" width="1159" height="773" extended-state="0" />
@@ -562,7 +559,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <option name="time" value="3" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -584,17 +581,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21911421" vertical-offset="581" max-vertical-offset="1350">
-          <caret line="139" column="7" selection-start-line="139" selection-start-column="7" selection-end-line="139" selection-end-column="7" />
+        <state vertical-scroll-proportion="0.36829838" vertical-offset="2377" max-vertical-offset="3825">
+          <caret line="169" column="24" selection-start-line="169" selection-start-column="24" selection-end-line="169" selection-end-column="24" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#View#0;class#View#0" expanded="false" />
-            <element signature="method#createButton#1;class#View#0" expanded="false" />
-            <element signature="method#resetBoard#0;class#View#0" expanded="false" />
-            <element signature="method#doTurn#0;class#View#0" expanded="false" />
-            <element signature="method#userPressed#0;class#View#0" expanded="false" />
+            <element signature="e#7969#7970#0" expanded="true" />
+            <element signature="e#8027#8028#0" expanded="true" />
+            <element signature="method#actionPerformed#0;class#Listener#0;class#View#0" expanded="false" />
             <element signature="method#checkIfWon#0;class#Listener#0;class#View#0" expanded="false" />
-            <element signature="method#checkWinInDirection#0;class#Listener#0;class#View#0" expanded="false" />
           </folding>
         </state>
       </provider>

@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 /**
  * Created by ahmed on 3/28/15.
@@ -49,7 +50,7 @@ public class View extends JFrame{
         game.add(resetButton);
 
         currentTurn = (Math.random() < 0.5)? Turn.AI:Turn.Player;
-
+        turn.setText((currentTurn==Turn.AI)? "AI->X":"Player->O");
         Listener listener = new Listener();
 
         resetButton.addActionListener(listener);
@@ -109,6 +110,10 @@ public class View extends JFrame{
         turn.setText((currentTurn==Turn.AI)? "X":"O");
     }
     private void doTurn(JButton buttonPressed){
+        if(currentTurn == Turn.AI){
+            doAITurn(buttonPressed);
+            return;
+        }
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 3; j++){
                 if(cells[i][j] == buttonPressed){
@@ -117,6 +122,71 @@ public class View extends JFrame{
                 }
             }
         }
+    }
+
+    private void doAITurn(JButton buttonPressed){
+        int highestScore = 0;
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 3; j++){
+                if(cells[i][j] == buttonPressed){
+                    if(!buttonPressed.getText().equals("")) continue;
+
+                    int currentScore = findScoreAtTile(new Point(i,j));
+                    cells[i][j].setText((currentTurn == Turn.AI)? "X":"O");
+                    currentScore = currentScore - getHighestScore();
+                    cells[i][j].setText("");//put cell back
+
+                    if(highestScore < currentScore) highestScore = currentScore;
+                }
+            }
+        }
+    }
+    private int getHighestScore(){
+        int highestScore = 0;
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 3; j++){
+                if(!cells[i][j].getText().equals("")) continue;
+                int currentScore = findScoreAtTile(new Point(i,j));
+                if(highestScore < currentScore) highestScore = currentScore;
+            }
+        }
+        return highestScore;
+    }
+    private int findScoreAtTile(Point point){
+        int score = 0;
+        for(Point vector : new Point[]{new Point(0,1), new Point(1,0), new Point(1,1), new Point(1,-1)}){
+            int scoreOfCurrentDirection = findScoreForDirection(vector.x, vector.y, point);
+            if(scoreOfCurrentDirection > score){
+                score = scoreOfCurrentDirection;
+            }
+        }
+        return score;
+    }
+    private int findScoreForDirection(int colIncrementor, int rowIncrementor, Point point){
+
+        int currentLength = 0; // it starts of at one because if you put a piece down here it will have a sequence of itself
+
+        String firstPointText = cells[point.x][ point.y].getText();
+        for (int discFromPoint = 1; true; discFromPoint++) {
+            Point currentPoint = new Point(point.x + colIncrementor * discFromPoint, point.y + rowIncrementor * discFromPoint);//get position of points
+            if (!isInBounds(currentPoint.x, currentPoint.y)) break;
+            if(firstPointText.equals(cells[currentPoint.x][currentPoint.y])){
+                currentLength++;
+            }
+        }
+
+        firstPointText = cells[point.x][ point.y].getText();
+        for (int discFromPoint = 1; true; discFromPoint++) {
+            Point currentPoint = new Point(point.x - colIncrementor * discFromPoint, point.y - rowIncrementor * discFromPoint);//get position of points
+            if (!isInBounds(currentPoint.x, currentPoint.y)) break;
+            if(firstPointText.equals(cells[currentPoint.x][currentPoint.y])){
+                currentLength++;
+            }
+        }
+
+
+        if(currentLength <= 1) return currentLength;
+        return (int)Math.pow(2, currentLength);
     }
     private void userPressed(JButton buttonPressed){
         //this is the button that was pressed
@@ -130,14 +200,16 @@ public class View extends JFrame{
         }
         turn.setText((currentTurn==Turn.AI)? "X":"O");
     }
+    public boolean isInBounds(int x, int y){
+        return !(x < 0 || x > 2 || y < 0 || y > 2);
+    }
 
     //creates a class called Listener that handles listener events such as actionPerformed, and handles all the mouse events which is called from the user input
     class Listener implements ActionListener, MouseInputListener {
         public Listener(){}//empty constructor
 
         //Purpose: when the user presses the main menu button it will call this function, and it will either go to the game stage or the custom game depending on what is clicked
-        @Override
-        public void actionPerformed(ActionEvent e) {
+        @Override public void actionPerformed(ActionEvent e) {
             if(e.getSource() == resetButton){
                 resetBoard();
                 return;
@@ -176,9 +248,6 @@ public class View extends JFrame{
             return Turn.GameOver;
         }
 
-        private boolean isInBounds(int x, int y){
-            return !(x < 0 || x > 2 || y < 0 || y > 2);
-        }
         //Purpose: this function will be called when the user presses a button, it will be responsible for handling the outcome of the button press.
         @Override
         public void mouseClicked(MouseEvent e) {}
