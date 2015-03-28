@@ -20,6 +20,13 @@ public class View extends JFrame{
     private JButton resetButton;
     private TextField turn;
 
+    Turn currentTurn;
+    enum Turn{
+        GameOver,
+        AI,
+        Player
+    }
+
     public View(int width, int height){
         //gets rid of java's default positioning system so we have more control and can manually position everything using absolute positioning
         this.getContentPane().setLayout(null);
@@ -27,17 +34,25 @@ public class View extends JFrame{
 
         game = new JPanel();
         game.setSize(width, height);
-        game.setLocation(0,0);
+        game.setLocation(0, 0);
         game.setLayout(null);
 
         cells = new JButton[3][3];
+
         turn = new TextField(" input the players turn here");
-        turn.setLocation(widthOfButton, heightOfButton * 4);
+        turn.setLocation(this.getWidth()/2, heightOfButton * 4);
         turn.setSize(widthOfButton, heightOfButton);
         game.add(turn);
 
+        resetButton = createButton("", widthOfButton + 40, heightOfButton * 4, widthOfButton, heightOfButton, game, "");
+        resetButton.setText("Reset");
+        game.add(resetButton);
+
+        currentTurn = (Math.random() < 0.5)? Turn.AI:Turn.Player;
+
         Listener listener = new Listener();
 
+        resetButton.addActionListener(listener);
         for(int i =0; i < cells.length; i++){
             for(int j = 0; j < cells[i].length; j++){
                 JButton currentButton = createButton("", i * widthOfButton, j * heightOfButton, game, "");
@@ -71,7 +86,8 @@ public class View extends JFrame{
         }else{
             //inform the user that the image can not be found
             System.out.println("go an empty location for image picture, using the default button");
-            newButton.setText("place button label here");
+//            newButton.setText("place button label here");
+            newButton.setText("");
         }
 
         // this sets the buttons size and location on the screen
@@ -82,6 +98,39 @@ public class View extends JFrame{
         return newButton;//returns the newly created button
     }
 
+    private void resetBoard(){
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 3; j++){
+                if(cells[i][j] != null)
+                    cells[i][j].setText("");
+            }
+        }
+        currentTurn = (Math.random() < 0.5)? Turn.AI:Turn.Player;
+        turn.setText((currentTurn==Turn.AI)? "X":"O");
+    }
+    private void doTurn(JButton buttonPressed){
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 3; j++){
+                if(cells[i][j] == buttonPressed){
+                    if(!buttonPressed.getText().equals("")) return;
+                    userPressed(cells[i][j]);
+                }
+            }
+        }
+    }
+    private void userPressed(JButton buttonPressed){
+        //this is the button that was pressed
+        if(currentTurn == Turn.AI) {
+            buttonPressed.setText("X");
+            currentTurn = Turn.Player;
+        } else if(currentTurn == Turn.Player){
+            buttonPressed.setText("O");
+            currentTurn = Turn.AI;
+
+        }
+        turn.setText((currentTurn==Turn.AI)? "X":"O");
+    }
+
     //creates a class called Listener that handles listener events such as actionPerformed, and handles all the mouse events which is called from the user input
     class Listener implements ActionListener, MouseInputListener {
         public Listener(){}//empty constructor
@@ -89,7 +138,14 @@ public class View extends JFrame{
         //Purpose: when the user presses the main menu button it will call this function, and it will either go to the game stage or the custom game depending on what is clicked
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("aasdsad");
+            if(e.getSource() == resetButton){
+                System.out.println("asdsadsd");
+                resetBoard();
+                return;
+            }
+            doTurn((JButton)e.getSource());
+
+
         }//end function
 
         //Purpose: this function will be called when the user presses a button, it will be responsible for handling the outcome of the button press.
