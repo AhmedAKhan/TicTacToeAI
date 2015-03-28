@@ -143,11 +143,42 @@ public class View extends JFrame{
                 resetBoard();
                 return;
             }
+
             doTurn((JButton)e.getSource());
-
-
+            System.out.println("did u win??: " + checkIfWon());
         }//end function
 
+        public boolean checkIfWon(){
+            for(int i = 0; i < 3; i++){
+                for(int j = 0; j<3; j++){
+                    for(Point vector : new Point[]{ new Point(0,1), new Point(1,0), new Point(1,1), new Point(-1,1) }) {
+                        if(checkWinInDirection(vector.x, vector.y, new Point(i,j))) return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        private boolean checkWinInDirection(int rowIncrementor, int colIncrementor, Point point){
+            if(cells[point.x][point.y].getText().equals("")) return false;
+            String firstPoint = cells[point.x][point.y].getText();//get position of points
+            int discFromPoint;
+            for (discFromPoint = 1; true; discFromPoint++) {
+                Point currentPoint = new Point(point.x + colIncrementor * discFromPoint, point.y + rowIncrementor * discFromPoint);//get position of points
+                if (!isInBounds(currentPoint.x, currentPoint.y)) break;
+                if(!firstPoint.equals(cells[currentPoint.x][currentPoint.y].getText())) break;
+            }
+            return (discFromPoint ==3);
+        }
+        private Turn convertStringToType(String x){
+            if(x.equals("X")) return Turn.AI;
+            if(x.equals("O")) return Turn.Player;
+            return Turn.GameOver;
+        }
+
+        private boolean isInBounds(int x, int y){
+            return !(x < 0 || x > 2 || y < 0 || y > 2);
+        }
         //Purpose: this function will be called when the user presses a button, it will be responsible for handling the outcome of the button press.
         @Override
         public void mouseClicked(MouseEvent e) {}
