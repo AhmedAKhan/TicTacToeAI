@@ -139,15 +139,15 @@ public class View extends JFrame{
         @Override
         public void actionPerformed(ActionEvent e) {
             if(e.getSource() == resetButton){
-                System.out.println("asdsadsd");
                 resetBoard();
                 return;
             }
 
+            if(checkIfWon()) return;
             doTurn((JButton)e.getSource());
-            System.out.println("did u win??: " + checkIfWon());
-        }//end function
+            if(checkIfWon()) JOptionPane.showMessageDialog(game, "The " + currentTurn + " has won");
 
+        }//end function
         public boolean checkIfWon(){
             for(int i = 0; i < 3; i++){
                 for(int j = 0; j<3; j++){
